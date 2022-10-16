@@ -1,0 +1,92 @@
+<head>
+    <title>stefan's space</title>
+
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins">
+
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            text-align: center;
+        }
+
+        h1 {
+            animation: h1 2s ease-out 0s 1 forwards;
+        }
+
+        p {
+            animation: fade-in 2s ease-in-out 2s 1 forwards;
+            max-width: 60%;
+            margin: 5px;
+            opacity: 0;
+        }
+
+        .vertical-flex {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        @keyframes h1 {
+            0% {
+                opacity: 0;
+                transform: scale(0.5);
+            }
+
+            75% {
+                transform: scale(1.2);
+            }
+
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        @keyframes fade-in {
+            0% {
+                opacity: 0;
+            }
+
+            100% {
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
+    <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+
+    <script type="text/babel">
+        class Page extends React.Component {
+            constructor(props){
+                super(props);
+            }
+
+            render(){
+                return (
+                    <div class='vertical-flex'>
+                        <h1>stefan's space</h1>
+
+                        <p>hello, and welcome.</p>
+
+                        <p>this is not a project that i will build once and then leave static forever. 
+                            i hope for it to be a continuously updated collection of applets, games, and whatnot
+                            that bring joy to your life.</p>
+
+                        <p>i love you biscuit ♥</p>
+
+                        <p>xoxo</p>
+                        <p>weldon</p>
+                    </div>
+                );           
+            }
+        }
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<Page/>);
+    </script>
+    <div id="root"></div>
+</body>
