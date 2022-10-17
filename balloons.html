@@ -1,5 +1,5 @@
 <head>
-    <title>HAPPY BIRTHDAY STEFAN</title>
+    <title>balloons</title>
 
     <style>
         :root {
@@ -7,9 +7,7 @@
             --lemon: #f7ff58;
             --dark-blue: #077187;
             --light-blue: #70e4ef;
-
         }
-
         .yellow-gradient {
             background: linear-gradient(10deg, var(--goldenrod), var(--lemon));
         }
@@ -21,7 +19,7 @@
         .balloon-container {
             width: 5vw;
             position: fixed;
-            animation: balloon 20s ease-in-out 0s 1 forwards;
+            animation: balloon 5s ease-in-out 0s infinite forwards;
             top: 100%;
         }
 
@@ -39,6 +37,7 @@
             width: 5vw;
             border-radius: 50%;
             z-index: 10;
+            animation: hue-rotate 30s ease-in-out 10s infinite forwards;
         }
 
         @keyframes balloon {
@@ -46,43 +45,23 @@
                 top: calc(100% - 7vw);
             }
 
-            11% {
+            50% {
                 top: 0%;
-            }
-
-            22% {
-                top: calc(100% - 7vw);
-            }
-
-            33% {
-                top: 0%;
-            }
-
-            44% {
-                top: calc(100% - 7vw);
-            }
-
-            56% {
-                top: 0%;
-            }
-
-            67% {
-                top: calc(100% - 7vw);
-            }
-
-            78% {
-                top: 0%;
-            }
-
-            89% {
-                top: calc(100% - 7vw);
             }
 
             100% {
-                top: -17vw;
+                top: calc(100% - 7vw);
+            }
+        }
+
+        @keyframes hue-rotate {
+            0% {
+                filter: hue-rotate(0deg);
             }
 
-
+            100% {
+                filter: hue-rotate(360deg);
+            }
         }
     </style>
 </head>
@@ -102,7 +81,6 @@
                 return (
                     <div>
                         <BalloonArray/>
-                        <h1>HAPPY BIRTHDAY STEFAN</h1>
                     </div>
                 );           
             }
@@ -141,7 +119,7 @@
                 let array = [];
 
                 for(let i = 0; i < 10; i++){
-                    array.push([i % 2 === 0 ? 'b' : 'y', 10 * i + 2.5 + '', i * 0.44 + 's']);
+                    array.push([i % 2 === 0 ? 'b' : 'y', 10 * i + 2.5 + '', i * 0.5 + 's']);
                 }
 
                 return (<div className = 'balloon-array'>

@@ -14,16 +14,40 @@
         }
 
         p {
-            animation: fade-in 2s ease-in-out 2s 1 forwards;
-            max-width: 60%;
+            display: inline-block;
             margin: 5px;
-            opacity: 0;
+            width: 60%;
+        }
+
+        .fade-in {
+            opacity: 1;
+            animation: fade-in 2s ease-in-out 2s 1 forwards;
         }
 
         .vertical-flex {
             display: flex;
             flex-direction: column;
             align-items: center;
+        }
+
+        .tile {
+            background-color: blue;
+            display: inline-flex;
+            flex-direction: column;
+            border-radius: 10px;
+            padding: 10px;
+            color: black;
+            text-decoration: none;
+        }
+
+        .tile img {
+            width: 200px;
+            height: auto;
+            border-radius: 10px;
+        }
+
+        .tile div {
+            padding: 5px;
         }
 
         @keyframes h1 {
@@ -60,6 +84,21 @@
     <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
 
     <script type="text/babel">
+        class Tile extends React.Component {
+            constructor(props){
+                super(props);
+            }
+
+            render(){
+                return (
+                    <a className='tile' href= {this.props.name + '.html'}>
+                        <img src={'media/' + this.props.name + '.png'}/>
+                        <div>{this.props.name}</div>
+                    </a>
+                );
+            }
+        }
+
         class Page extends React.Component {
             constructor(props){
                 super(props);
@@ -67,21 +106,27 @@
 
             render(){
                 return (
-                    <div class='vertical-flex'>
+                    <div className='vertical-flex'>
                         <h1>stefan's space</h1>
 
-                        <p>hello, and welcome.</p>
+                        <div className='fade-in'>
+                            <p>hello, and welcome.</p>
 
-                        <p>this is not a project that i will build once and then leave static forever. 
-                            i hope for it to be a continuously updated collection of applets, games, and whatnot
-                            that bring joy to your life.</p>
+                            <p>this is not a project that i will build once and then leave static forever.
+                                i hope for it to be a continuously updated collection of applets, games, and whatnot
+                                that bring joy to your life.</p>
 
-                        <p>i love you biscuit ♥</p>
+                            <p>i love you biscuit ♥</p>
 
-                        <p>xoxo</p>
-                        <p>weldon</p>
+                            <p>xoxo</p>
+                            <p>weldon</p>
 
-                        <a href='balloons.html'>balon</a>
+                            <h2>virtual trinkets</h2>
+                            <div className='trinket-grid'>
+                                <Tile name='balloons'/>
+                            </div>
+                            
+                        </div>
                     </div>
                 );          
             }
