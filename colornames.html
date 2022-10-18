@@ -1,0 +1,135 @@
+<head>
+    <title>colornames</title>
+
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins">
+
+    <style>
+        .color {
+            display: inline-flex;
+            flex-direction: column;
+            align-items: center;
+
+            border: 1px solid black;
+            margin: 10px;
+        }
+
+        .color-square {
+            height: 100px;
+            width: 100px;
+            margin: 10px;
+        }
+    </style>
+    </head>
+    
+    <body>
+        <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
+        <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
+        <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+    
+        <script type="text/babel">
+
+            const CATEGORIES = {
+                'I': 'mnptCkbdjgfTsShvz',
+                'L': 'rlyw',
+                'V': 'aeiou',
+                'M': 'rl',
+                'F': 'mnNptCkbdjgfTsSvz'
+            }
+
+            const REWRITES = {
+                'C': 'ch',
+                'T': 'th',
+                'S': 'sh',
+                'N': 'ng'
+            }
+
+            const SYLLABLES = [
+                'IVF', 'IVM', 'IVMF', 
+                'LVF', 'LVM', 'LVMF',
+                'ILVF', 'ILVM', 'ILVMF'
+            ];
+
+            const isVowel = char => ['a', 'e', 'i', 'o', 'u'].some(elem => char === elem);
+
+            const getRandomSyllable = () => {
+                let template = SYLLABLES[Math.floor(Math.random() * SYLLABLES.length)];
+                return Array.from(template)
+                    .map(elem => {
+                        let char = CATEGORIES[elem].charAt(Math.floor(Math.random() * CATEGORIES[elem].length));
+                        return REWRITES.hasOwnProperty(char) ? REWRITES[char] : char;        
+                    })
+                    .join('');
+            };
+
+            const merge = (syll1, syll2) => {
+                let i1 = syll1.length - 1;
+                let i2 = 0;
+                while(!isVowel(syll1.charAt(i1))){
+                    i1--;
+                }
+
+                while(!isVowel(syll2.charAt(i2))){
+                    i2++;
+                }
+
+                if(syll1.length > syll2.length){
+                    return syll1.substring(0, i1 + 1) + syll2;
+                }
+
+                return syll1 + syll2.substring(i2);
+            }
+
+            const getRGB = array => {
+                return array.reduce((rgbString, elem) => {
+                    let currentString = elem.toString(16);
+
+                    if(currentString.length === 1){
+                        currentString = '0' + currentString;
+                    }
+
+                    return rgbString + currentString;
+                }, '#');
+            };
+
+            const getRandomColor = () => [Math.floor(Math.random() * 255), Math.floor(Math.random() * 255), Math.floor(Math.random() * 255)];
+                
+        class Color extends React.Component {
+            constructor(props){
+                super(props);
+            }
+
+            render(){
+                let color = getRandomColor();
+
+                return (<div className='color'>
+                    <div className='color-square' style = {{'backgroundColor' : getRGB(color)}}></div>
+                    <div>b</div>
+                    <div>{getRGB(color)}</div>
+                </div>);
+            }
+        }
+
+        class Page extends React.Component {
+            constructor(props){
+                super(props);
+            }
+
+            render(){
+                return (<div>
+                    <h1>color names</h1>     
+                    
+                    <Color name='black' color={getRGB(getRandomColor())}/>
+                    <Color name='black' color={getRGB(getRandomColor())}/>
+                    <Color name='black' color={getRGB(getRandomColor())}/>
+                    <Color name='black' color={getRGB(getRandomColor())}/>
+                    <Color name='black' color={getRGB(getRandomColor())}/>
+                </div>);          
+            }
+        }
+
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<Page/>);
+    </script>
+    <div id="root"></div>
+</body>
