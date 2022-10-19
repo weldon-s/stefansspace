@@ -10,16 +10,16 @@ const getHSL = (r, g, b) => {
 
     let h;
 
-    if(Math.abs(delta) < 0.001){
+    if (Math.abs(delta) < 0.001) {
         h = 0;
     }
-    else if(rPrime === max){
-        h = 60 * (((gPrime - bPrime) / delta) % 6);
+    else if (rPrime === max) {
+        h = 60 * ((((gPrime - bPrime) / delta) + 6) % 6);
     }
-    else if(gPrime === max){
+    else if (gPrime === max) {
         h = 60 * ((bPrime - rPrime) / delta + 2);
     }
-    else if(bPrime === max){
+    else if (bPrime === max) {
         h = 60 * ((rPrime - gPrime) / delta + 4);
     }
 
@@ -27,7 +27,7 @@ const getHSL = (r, g, b) => {
 
     let s = 0;
 
-    if(delta !== 0){
+    if (delta !== 0) {
         s = delta / (1 - Math.abs(2 * l - 1));
     }
 

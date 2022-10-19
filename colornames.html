@@ -4,6 +4,20 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins">
 
     <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+        }
+
+        h1, div{
+            text-align: center;
+        }
+
+        #page {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
         .color {
             display: inline-flex;
             flex-direction: column;
@@ -11,13 +25,32 @@
 
             border: 1px solid black;
             margin: 10px;
+            padding: 10px;
         }
 
         .color-square {
-            height: 100px;
-            width: 100px;
+            height: 50px;
+            width: 50px;
+            margin-bottom: 5px;
+        }
+
+        .button {
+            border: 1px solid black;
+            padding: 10px;
+        }
+
+        .double-flex {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            grid-gap: 20px;
+        }
+
+        #color-grid {
+            width: 80%;
+            border: 1px solid black;
             margin: 10px;
         }
+
     </style>
     </head>
     
@@ -99,31 +132,121 @@
             }
 
             render(){
-                let color = getRandomColor();
-
-                return (<div className='color'>
-                    <div className='color-square' style = {{'backgroundColor' : getRGB(color)}}></div>
-                    <div>b</div>
-                    <div>{getRGB(color)}</div>
+                return (<div className='color' onClick={this.props.onClick}>
+                    <div className='color-square' style = {{'backgroundColor' : getRGB(this.props.color)}}></div>
+                    <div>{this.props.name}</div>
+                    <div>{getRGB(this.props.color)}</div>
                 </div>);
             }
+        }
+
+        const getStartingArray = () => {
+            let ret = [];
+            
+            for(let i = 0; i < 5; i++){
+                ret.push({
+                    color: getRandomColor(),
+                    name: getRandomSyllable()
+                });
+            }
+
+            return ret;
         }
 
         class Page extends React.Component {
             constructor(props){
                 super(props);
+
+                this.state = {
+                    colors: getStartingArray(),
+                    mergeColors: []
+                }
+
+                this.addColor = this.addColor.bind(this);
+                this.addRandomColor = this.addRandomColor.bind(this);
+                this.addMergedColor = this.addMergedColor.bind(this);
+                this.updateMergeColors = this.updateMergeColors.bind(this);
+            }
+
+            addColor(newColor, newName){
+                this.setState(state => ({
+                    colors: [...state.colors, {
+                        color: newColor,
+                        name: newName
+                    }]
+                }));
+            }
+
+            addRandomColor(){
+                this.addColor(getRandomColor(), getRandomSyllable())
+            }
+
+            updateMergeColors(colorObject){
+                let t = this;
+
+                return function(){
+                    let newMergeColors = [...t.state.mergeColors];
+
+                    if(newMergeColors.length > 0 && newMergeColors[newMergeColors.length - 1].name === colorObject.name){
+                        return;
+                    }
+
+                    if(newMergeColors.length < 2){
+                        newMergeColors.push(colorObject);
+                    }
+                    else{
+                        newMergeColors[0] = newMergeColors[1];
+                        newMergeColors[1] = colorObject;
+                    }
+
+                    t.setState({
+                        mergeColors: newMergeColors
+                    });
+
+                    console.log(newMergeColors);
+                };
+            }
+
+            addMergedColor(){
+                if(this.state.mergeColors.length < 2){
+                    return;
+                }
+
+                let newColor = [];
+
+                for(let i = 0; i < 3; i++){
+                    newColor.push(Math.round((this.state.mergeColors[0].color[i] + this.state.mergeColors[1].color[i]) / 2));
+                }
+
+                this.addColor(newColor, merge(this.state.mergeColors[0].name, this.state.mergeColors[1].name));
+            
+                this.setState({
+                    mergeColors: []
+                });
             }
 
             render(){
-                return (<div>
-                    <h1>color names</h1>     
+                return (<div id='page'>
+                    <h1>color names</h1>  
                     
-                    <Color name='black' color={getRGB(getRandomColor())}/>
-                    <Color name='black' color={getRGB(getRandomColor())}/>
-                    <Color name='black' color={getRGB(getRandomColor())}/>
-                    <Color name='black' color={getRGB(getRandomColor())}/>
-                    <Color name='black' color={getRGB(getRandomColor())}/>
-                </div>);          
+                    <div className='double-flex'>
+                        <div className='button' onClick={this.addRandomColor}>add random color</div>
+                        <div className='button' onClick={this.addMergedColor} style={{'color': this.state.mergeColors.length == 2 ? 'black': 'gray'}}>add merged color</div>
+                    </div>
+
+                    <div id='color-grid'>
+                        {this.state.colors.map(elem => <Color key={elem.name} name={elem.name} color={elem.color} onClick ={this.updateMergeColors(elem)}/>)}
+                    </div>
+
+                    <div>colors to merge
+                        {this.state.mergeColors.length < 2 && " (select two)"}
+                        </div>
+
+                    <div className='double-flex'>
+                        {this.state.mergeColors.map(elem => <Color key={elem.name} name={elem.name} color={elem.color}/>)}
+                    </div>
+
+                    </div>);          
             }
         }
 
