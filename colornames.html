@@ -31,7 +31,7 @@
             height: 30px;
             width: 30px;
             margin-bottom: 5px;
-        }
+            }
         }
 
         main {
@@ -95,7 +95,16 @@
             margin: 10px;
             align-self: center;
         }
+        
+        @media (max-aspect-ratio: 1/2) {
+            header {
+                height: 15vh;
+            }
 
+            main {
+                top: 15vh;
+            }
+        }
     </style>
     </head>
     
