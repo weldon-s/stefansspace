@@ -7,14 +7,27 @@
         :root {
             --green: #b4ceb3;
             --pink: #c9b1bd;
-            --red: #a40e4c;
-            --blue: #086788;
-            --purple: #a67db8;
+            --red: #f7a1c5;
+            --blue: #9fe3f9;
+            --purple: #d2bddb;
+        }
+
+        .red {
+            background-color: var(--red);
+        }
+        
+        .blue {
+            background-color: var(--blue);
+        }
+
+        .purple {
+            background-color: var(--purple);
         }
 
         body {
             font-family: 'Poppins', sans-serif;
             text-align: center;
+            color: #444444;
         }
 
         h1 {
@@ -43,18 +56,25 @@
             flex-direction: column;
             border-radius: 10px;
             padding: 10px;
-            color: black;
+            color: #444444;
             text-decoration: none;
+            opacity: 0.6;
+            margin: 15px;
+            position: relative;
         }
 
-        .tile img {
+        .tile:hover {
+            animation: hover 0.5s ease-in-out 0s 1 forwards;
+        }
+
+        .tile > img {
             width: 200px;
             height: auto;
             border-radius: 10px;
         }
 
-        .tile div {
-            padding: 5px;
+        .tile > .text {
+            margin: 5px;
         }
 
         @keyframes h1 {
@@ -82,6 +102,16 @@
                 opacity: 1;
             }
         }
+
+        @keyframes hover {
+            0% {
+                opacity: 0.6
+            }
+
+            100% {
+                opacity: 1;
+            }
+        }
     </style>
 </head>
 
@@ -98,9 +128,9 @@
 
             render(){
                 return (
-                    <a className='tile' href= {this.props.name + '.html'}>
+                    <a className={'tile ' + this.props.className} href= {this.props.name + '.html'}>
                         <img src={'media/' + this.props.name + '.png'}/>
-                        <div>{this.props.name}</div>
+                        <div className='text'><span>{this.props.name}</span></div>
                     </a>
                 );
             }
@@ -130,8 +160,9 @@
 
                             <h2>virtual trinkets</h2>
                             <div className='trinket-grid'>
-                                <Tile name='balloons'/>
-                                <Tile name='colornames'/>
+                                <Tile className='red' name='balloons'/>
+                                <Tile className='blue' name='colornames'/>
+                                <Tile className='purple' name='tictactorus'/>
                             </div>
                             
                         </div>

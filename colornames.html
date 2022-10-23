@@ -6,16 +6,56 @@
     <style>
         body {
             font-family: 'Poppins', sans-serif;
+            color: #444444;
         }
 
         h1, div{
             text-align: center;
         }
 
-        #page {
+        header {
+            position: fixed;
+            background-color: white;
+            width: 100%;
+            height: 30vh;
+            z-index: 10;
+            top: 0;
+        }
+
+        @media (max-width: 900px) {
+            body {
+                font-size: 0.8em;
+            }
+
+            .color-square {
+            height: 30px;
+            width: 30px;
+            margin-bottom: 5px;
+        }
+        }
+
+        main {
+            position: absolute;
+            top: 30vh;
+            margin: 0;
+            width: 100%;
+            left: 0;
             display: flex;
             flex-direction: column;
             align-items: center;
+        }
+
+        #header-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            grid-gap: 10%;
+            margin: 0 5% 0 5%;
+            height: 50px;
+        }
+
+        .color-text {
+            margin: 0px 10px 0px 10px;
+            font-weight: 900;
         }
 
         .color {
@@ -23,7 +63,7 @@
             flex-direction: column;
             align-items: center;
 
-            border: 1px solid black;
+            border: 1px solid #444444;
             margin: 10px;
             padding: 10px;
         }
@@ -37,6 +77,10 @@
         .button {
             border: 1px solid black;
             padding: 10px;
+            height: 90%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         .double-flex {
@@ -46,9 +90,10 @@
         }
 
         #color-grid {
-            width: 80%;
+            max-width: 80%;
             border: 1px solid black;
             margin: 10px;
+            align-self: center;
         }
 
     </style>
@@ -140,25 +185,12 @@
             }
         }
 
-        const getStartingArray = () => {
-            let ret = [];
-            
-            for(let i = 0; i < 5; i++){
-                ret.push({
-                    color: getRandomColor(),
-                    name: getRandomSyllable()
-                });
-            }
-
-            return ret;
-        }
-
         class Page extends React.Component {
             constructor(props){
                 super(props);
 
                 this.state = {
-                    colors: getStartingArray(),
+                    colors: [],
                     mergeColors: []
                 }
 
@@ -226,25 +258,33 @@
             }
 
             render(){
-                return (<div id='page'>
-                    <h1>color names</h1>  
-                    
-                    <div className='double-flex'>
-                        <div className='button' onClick={this.addRandomColor}>add random color</div>
-                        <div className='button' onClick={this.addMergedColor} style={{'color': this.state.mergeColors.length == 2 ? 'black': 'gray'}}>add merged color</div>
-                    </div>
+                return (<div>
 
-                    <div id='color-grid'>
-                        {this.state.colors.map(elem => <Color key={elem.name} name={elem.name} color={elem.color} onClick ={this.updateMergeColors(elem)}/>)}
-                    </div>
+                    <header>
+                        <h1 style={{'color': this.state.colors.length > 0 ? getRGB(this.state.colors[this.state.colors.length - 1].color) : '#444444'}}>colornames</h1>
 
-                    <div>colors to merge
-                        {this.state.mergeColors.length < 2 && " (select two)"}
+                        <div id='header-row'>
+                            <div className='button' onClick={this.addRandomColor}><span>add random color</span></div>
+                            <div className='button' onClick={this.addMergedColor} style={{ 'color': this.state.mergeColors.length == 2 ? '#444444' : '#888888'}}><span>add merged color</span></div>
+
+                            <div>
+                                <div>colors to merge</div>
+
+                                {this.state.mergeColors.map(elem =>
+                                    <span key={elem.name} className='color-text' style={{ 'color': getRGB(elem.color) }}>{elem.name.length > 20 ? elem.name.substring(0, 17) + '...' : elem.name}</span>
+                                )}
+                            </div>
+
                         </div>
+                    </header>
+                    <main>
+                        <p>click two colors to merge them</p>
+                        <p>warning: making colors with sufficiently long names may give rise to formatting anomalies</p>
 
-                    <div className='double-flex'>
-                        {this.state.mergeColors.map(elem => <Color key={elem.name} name={elem.name} color={elem.color}/>)}
-                    </div>
+                        {this.state.colors.length > 0 && <div id='color-grid'>
+                            {this.state.colors.map(elem => <Color key={elem.name} name={elem.name} color={elem.color} onClick={this.updateMergeColors(elem)} />)}
+                        </div>}
+                    </main>
 
                     </div>);          
             }
